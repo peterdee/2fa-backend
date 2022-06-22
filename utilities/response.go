@@ -1,0 +1,30 @@
+package utilities
+
+import (
+	"github.com/gofiber/fiber/v2"
+
+	"backend2fa/configuration"
+)
+
+func Response(payload ResponsePayloadStruct) error {
+	info := payload.Info
+	if info == "" {
+		info = configuration.RESPONSE_MESSAGES.OK
+	}
+
+	status := payload.Status
+	if status == 0 {
+		status = fiber.StatusOK
+	}
+
+	responseStruct := fiber.Map{
+		"info":   info,
+		"status": status,
+	}
+
+	if payload.Data != nil {
+		responseStruct["data"] = payload.Data
+	}
+
+	return payload.Context.Status(status).JSON(responseStruct)
+}

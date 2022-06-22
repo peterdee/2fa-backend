@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"os"
 
 	"github.com/gofiber/fiber/v2"
@@ -10,6 +11,8 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/helmet/v2"
 
+	authAPI "backend2fa/apis/auth"
+	indexAPI "backend2fa/apis/index"
 	"backend2fa/configuration"
 )
 
@@ -26,16 +29,13 @@ func main() {
 	app.Use(helmet.New())
 	app.Use(logger.New())
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.Status(fiber.StatusOK).JSON(fiber.Map{
-			"info":   configuration.RESPONSE_MESSAGES.OK,
-			"status": fiber.StatusOK,
-		})
-	})
+	authAPI.Initialize(app)
+	indexAPI.Initialize(app)
 
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = configuration.DEFAULT_PORT
 	}
-	app.Listen(":" + port)
+
+	log.Fatal(app.Listen(":" + port))
 }
