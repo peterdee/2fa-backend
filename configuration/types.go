@@ -5,6 +5,12 @@ type ClientTypesStruct struct {
 	Web    string
 }
 
+type EnvironmentsStruct struct {
+	Development string
+	Heroku      string
+	Production  string
+}
+
 type ResponseMessagesStruct struct {
 	InternalServerError string
 	InvalidData         string

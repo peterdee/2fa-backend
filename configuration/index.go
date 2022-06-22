@@ -7,6 +7,12 @@ var CLIENT_TYPES = ClientTypesStruct{
 
 var DEFAULT_PORT string = "2244"
 
+var ENVS = EnvironmentsStruct{
+	Development: "development",
+	Heroku:      "heroku",
+	Production:  "production",
+}
+
 var RESPONSE_MESSAGES = ResponseMessagesStruct{
 	InternalServerError: "INTERNAL_SERVER_ERROR",
 	InvalidData:         "INVALID_DATA",

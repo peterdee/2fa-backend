@@ -5,7 +5,8 @@ go 1.18
 require (
 	github.com/gofiber/fiber/v2 v2.34.1
 	github.com/gofiber/helmet/v2 v2.2.13
-  github.com/julyskies/gohelpers v0.0.0-20210803104644-c71779c2e815
+  github.com/joho/godotenv v1.4.0
+	github.com/julyskies/gohelpers v0.0.0-20210803104644-c71779c2e815
 )
 
 require (

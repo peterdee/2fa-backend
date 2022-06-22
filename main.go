@@ -10,6 +10,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/favicon"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/helmet/v2"
+	"github.com/joho/godotenv"
 
 	authAPI "backend2fa/apis/auth"
 	indexAPI "backend2fa/apis/index"
@@ -17,6 +18,14 @@ import (
 )
 
 func main() {
+	env := os.Getenv("ENV")
+	if env != configuration.ENVS.Heroku {
+		environmentError := godotenv.Load()
+		if environmentError != nil {
+			log.Fatal("Could not load environment variables!")
+		}
+	}
+
 	app := fiber.New()
 
 	app.Use(compress.New(compress.Config{
