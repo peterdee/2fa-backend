@@ -3,12 +3,9 @@ package auth
 import (
 	"github.com/gofiber/fiber/v2"
 
-	"backend2fa/configuration"
+	"backend2fa/utilities"
 )
 
 func signUpController(context *fiber.Ctx) error {
-	return context.Status(fiber.StatusOK).JSON(fiber.Map{
-		"info":   configuration.RESPONSE_MESSAGES.OK,
-		"status": fiber.StatusOK,
-	})
+	return utilities.Response(utilities.ResponsePayloadStruct{Context: context})
 }

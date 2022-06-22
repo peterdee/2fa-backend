@@ -1,7 +1,15 @@
 package configuration
 
+var CLIENT_TYPES = ClientTypesStruct{
+	Mobile: "mobile",
+	Web:    "web",
+}
+
 var DEFAULT_PORT string = "2244"
 
 var RESPONSE_MESSAGES = ResponseMessagesStruct{
-	OK: "OK",
+	InternalServerError: "INTERNAL_SERVER_ERROR",
+	InvalidData:         "INVALID_DATA",
+	MissingData:         "MISSING_DATA",
+	OK:                  "OK",
 }

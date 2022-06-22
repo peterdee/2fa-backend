@@ -1,5 +1,13 @@
 package configuration
 
+type ClientTypesStruct struct {
+	Mobile string
+	Web    string
+}
+
 type ResponseMessagesStruct struct {
-	OK string
+	InternalServerError string
+	InvalidData         string
+	MissingData         string
+	OK                  string
 }

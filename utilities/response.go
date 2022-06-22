@@ -2,6 +2,7 @@ package utilities
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/julyskies/gohelpers"
 
 	"backend2fa/configuration"
 )
@@ -18,8 +19,10 @@ func Response(payload ResponsePayloadStruct) error {
 	}
 
 	responseStruct := fiber.Map{
-		"info":   info,
-		"status": status,
+		"datetime": gohelpers.MakeTimestamp(),
+		"info":     info,
+		"request":  payload.Context.OriginalURL(),
+		"status":   status,
 	}
 
 	if payload.Data != nil {
