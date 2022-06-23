@@ -1,7 +1,7 @@
 package database
 
 import (
-	"fmt"
+	"backend2fa/database/models"
 	"log"
 	"os"
 
@@ -20,12 +20,14 @@ func Connect() {
 	dsn := "host=" + host + " user=" +
 		user + " password=" + password + " dbname=" +
 		databaseName + " port=" + port + " sslmode=disable"
-	instance, connectionError := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
-	fmt.Println(dsn, instance)
+	instance, connectionError := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if connectionError != nil {
 		log.Fatal(connectionError)
 	}
+
+	instance.AutoMigrate(&models.Passwords{})
+	instance.AutoMigrate(&models.Users{})
 
 	Connection = instance
 }
