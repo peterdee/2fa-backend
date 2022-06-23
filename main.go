@@ -15,6 +15,7 @@ import (
 	authAPI "backend2fa/apis/auth"
 	indexAPI "backend2fa/apis/index"
 	"backend2fa/configuration"
+	"backend2fa/database"
 )
 
 func main() {
@@ -25,6 +26,8 @@ func main() {
 			log.Fatal("Could not load environment variables!")
 		}
 	}
+
+	database.Connect()
 
 	app := fiber.New()
 
