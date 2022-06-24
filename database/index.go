@@ -1,12 +1,13 @@
 package database
 
 import (
-	"backend2fa/database/models"
 	"log"
 	"os"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+
+	"backend2fa/database/models"
 )
 
 var Connection *gorm.DB
@@ -26,8 +27,11 @@ func Connect() {
 		log.Fatal(connectionError)
 	}
 
-	instance.AutoMigrate(&models.Passwords{})
 	instance.AutoMigrate(&models.Users{})
+	instance.AutoMigrate(&models.Passwords{})
+	instance.AutoMigrate(&models.Secrets{})
+	instance.AutoMigrate(&models.TokenSecrets{})
+	instance.AutoMigrate(&models.UserDevices{})
 
 	Connection = instance
 }
