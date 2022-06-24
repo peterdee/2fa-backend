@@ -7,11 +7,12 @@ require (
 	github.com/gofiber/helmet/v2 v2.2.13
 	github.com/joho/godotenv v1.4.0
 	github.com/julyskies/gohelpers v0.0.0-20210803104644-c71779c2e815
-  gorm.io/driver/postgres v1.3.7
+	gorm.io/driver/postgres v1.3.7
 	gorm.io/gorm v1.23.6
 )
 
 require (
+	github.com/alexedwards/argon2id v0.0.0-20211130144151-3585854a6387 // indirect
 	github.com/andybalholm/brotli v1.0.4 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.12.1 // indirect

@@ -16,6 +16,7 @@ var ENVS = EnvironmentsStruct{
 var RESPONSE_MESSAGES = ResponseMessagesStruct{
 	InternalServerError: "INTERNAL_SERVER_ERROR",
 	InvalidData:         "INVALID_DATA",
+	LoginAlreadyInUse:   "LOGIN_ALREADY_IN_USE",
 	MissingData:         "MISSING_DATA",
 	OK:                  "OK",
 }

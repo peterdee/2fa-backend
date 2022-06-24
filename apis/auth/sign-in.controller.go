@@ -1,6 +1,8 @@
 package auth
 
 import (
+	"strings"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/julyskies/gohelpers"
 
@@ -17,7 +19,11 @@ func signInController(context *fiber.Ctx) error {
 			Status:  fiber.StatusInternalServerError,
 		})
 	}
-	if payload.ClientType == "" || payload.Login == "" || payload.Password == "" {
+
+	clientType := strings.Trim(payload.ClientType, " ")
+	login := strings.Trim(payload.Login, " ")
+	password := strings.Trim(payload.Password, " ")
+	if clientType == "" || login == "" || password == "" {
 		return utilities.Response(utilities.ResponsePayloadStruct{
 			Context: context,
 			Info:    configuration.RESPONSE_MESSAGES.MissingData,
