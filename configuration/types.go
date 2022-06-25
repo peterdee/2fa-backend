@@ -16,5 +16,7 @@ type ResponseMessagesStruct struct {
 	InvalidData         string
 	LoginAlreadyInUse   string
 	MissingData         string
+	MissingToken        string
 	OK                  string
+	Unauthorized        string
 }

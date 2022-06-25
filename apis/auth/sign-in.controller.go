@@ -7,6 +7,8 @@ import (
 	"github.com/julyskies/gohelpers"
 
 	"backend2fa/configuration"
+	"backend2fa/database"
+	"backend2fa/database/models"
 	"backend2fa/utilities"
 )
 
@@ -32,7 +34,7 @@ func signInController(context *fiber.Ctx) error {
 	}
 
 	clients := gohelpers.ObjectValues(configuration.CLIENT_TYPES)
-	if !gohelpers.IncludesString(clients, payload.ClientType) {
+	if !gohelpers.IncludesString(clients, clientType) {
 		return utilities.Response(utilities.ResponsePayloadStruct{
 			Context: context,
 			Info:    configuration.RESPONSE_MESSAGES.InvalidData,
@@ -40,5 +42,74 @@ func signInController(context *fiber.Ctx) error {
 		})
 	}
 
-	return utilities.Response(utilities.ResponsePayloadStruct{Context: context})
+	var user models.Users
+	result := database.Connection.Where("login = ?", login).Find(&user)
+	if result.Error != nil {
+		return utilities.Response(utilities.ResponsePayloadStruct{
+			Context: context,
+			Info:    configuration.RESPONSE_MESSAGES.InternalServerError,
+			Status:  fiber.StatusInternalServerError,
+		})
+	}
+	if result.RowsAffected == 0 {
+		return utilities.Response(utilities.ResponsePayloadStruct{
+			Context: context,
+			Info:    configuration.RESPONSE_MESSAGES.Unauthorized,
+			Status:  fiber.StatusUnauthorized,
+		})
+	}
+
+	var passwordRecord models.Passwords
+	result = database.Connection.Where("user_id = ?", user.ID).Find(&passwordRecord)
+	if result.Error != nil {
+		return utilities.Response(utilities.ResponsePayloadStruct{
+			Context: context,
+			Info:    configuration.RESPONSE_MESSAGES.InternalServerError,
+			Status:  fiber.StatusInternalServerError,
+		})
+	}
+	if result.RowsAffected == 0 {
+		return utilities.Response(utilities.ResponsePayloadStruct{
+			Context: context,
+			Info:    configuration.RESPONSE_MESSAGES.Unauthorized,
+			Status:  fiber.StatusUnauthorized,
+		})
+	}
+
+	var tokenSecretRecord models.TokenSecrets
+	result = database.Connection.Where("user_id = ?", user.ID).Find(&tokenSecretRecord)
+	if result.Error != nil {
+		return utilities.Response(utilities.ResponsePayloadStruct{
+			Context: context,
+			Info:    configuration.RESPONSE_MESSAGES.InternalServerError,
+			Status:  fiber.StatusInternalServerError,
+		})
+	}
+	if result.RowsAffected == 0 {
+		return utilities.Response(utilities.ResponsePayloadStruct{
+			Context: context,
+			Info:    configuration.RESPONSE_MESSAGES.Unauthorized,
+			Status:  fiber.StatusUnauthorized,
+		})
+	}
+
+	token, signError := utilities.CreateToken(user.ID, clientType, tokenSecretRecord.Secret)
+	if signError != nil {
+		return utilities.Response(utilities.ResponsePayloadStruct{
+			Context: context,
+			Info:    configuration.RESPONSE_MESSAGES.InternalServerError,
+			Status:  fiber.StatusInternalServerError,
+		})
+	}
+
+	return utilities.Response(utilities.ResponsePayloadStruct{
+		Data: fiber.Map{
+			"token": token,
+			"user": fiber.Map{
+				"id":    user.ID,
+				"login": user.Login,
+			},
+		},
+		Context: context,
+	})
 }

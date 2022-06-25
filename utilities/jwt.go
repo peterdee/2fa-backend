@@ -55,3 +55,8 @@ func DecodeToken(token string) (TokenClaims, error) {
 
 	return tokenClaims, nil
 }
+
+func VerifyToken(token, tokenSecret string) bool {
+	_, verificationError := jwt.HMACCheck([]byte(token), []byte(tokenSecret))
+	return verificationError != nil
+}

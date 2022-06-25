@@ -18,5 +18,7 @@ var RESPONSE_MESSAGES = ResponseMessagesStruct{
 	InvalidData:         "INVALID_DATA",
 	LoginAlreadyInUse:   "LOGIN_ALREADY_IN_USE",
 	MissingData:         "MISSING_DATA",
+	MissingToken:        "MISSING_TOKEN",
 	OK:                  "OK",
+	Unauthorized:        "Unauthorized",
 }
