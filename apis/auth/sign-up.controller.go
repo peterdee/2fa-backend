@@ -72,7 +72,44 @@ func signUpController(context *fiber.Ctx) error {
 		})
 	}
 
-	// TODO: create password hash, create token secret
+	passwordHash, hashError := utilities.CreateHash(password)
+	if hashError != nil {
+		return utilities.Response(utilities.ResponsePayloadStruct{
+			Context: context,
+			Info:    configuration.RESPONSE_MESSAGES.InternalServerError,
+			Status:  fiber.StatusInternalServerError,
+		})
+	}
+	newPassword := models.Passwords{Hash: passwordHash, UserID: newUser.ID}
+	result = database.Connection.Create(&newPassword)
+	if result.Error != nil {
+		return utilities.Response(utilities.ResponsePayloadStruct{
+			Context: context,
+			Info:    configuration.RESPONSE_MESSAGES.InternalServerError,
+			Status:  fiber.StatusInternalServerError,
+		})
+	}
+
+	tokenKey := utilities.CreateTokenKey(newUser.ID)
+	tokenSecret, secretError := utilities.CreateHash(tokenKey)
+	if secretError != nil {
+		return utilities.Response(utilities.ResponsePayloadStruct{
+			Context: context,
+			Info:    configuration.RESPONSE_MESSAGES.InternalServerError,
+			Status:  fiber.StatusInternalServerError,
+		})
+	}
+	newTokenSecret := models.TokenSecrets{Secret: tokenSecret, UserID: newUser.ID}
+	result = database.Connection.Create(&newTokenSecret)
+	if result.Error != nil {
+		return utilities.Response(utilities.ResponsePayloadStruct{
+			Context: context,
+			Info:    configuration.RESPONSE_MESSAGES.InternalServerError,
+			Status:  fiber.StatusInternalServerError,
+		})
+	}
+
+	// TODO: generate JWT
 
 	return utilities.Response(utilities.ResponsePayloadStruct{Context: context})
 }

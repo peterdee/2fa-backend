@@ -3,6 +3,7 @@ module backend2fa
 go 1.18
 
 require (
+	github.com/alexedwards/argon2id v0.0.0-20211130144151-3585854a6387
 	github.com/gofiber/fiber/v2 v2.34.1
 	github.com/gofiber/helmet/v2 v2.2.13
 	github.com/joho/godotenv v1.4.0
@@ -12,7 +13,6 @@ require (
 )
 
 require (
-	github.com/alexedwards/argon2id v0.0.0-20211130144151-3585854a6387 // indirect
 	github.com/andybalholm/brotli v1.0.4 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.12.1 // indirect
