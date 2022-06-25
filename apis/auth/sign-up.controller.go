@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
@@ -117,6 +118,9 @@ func signUpController(context *fiber.Ctx) error {
 			Status:  fiber.StatusInternalServerError,
 		})
 	}
+
+	decoded, _ := utilities.DecodeToken(token)
+	fmt.Println(decoded)
 
 	return utilities.Response(utilities.ResponsePayloadStruct{
 		Context: context,

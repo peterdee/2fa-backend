@@ -2,6 +2,7 @@ package utilities
 
 import (
 	"encoding/json"
+	"errors"
 	"time"
 
 	"github.com/pascaldekloe/jwt"
@@ -9,6 +10,12 @@ import (
 
 type extraHeaders struct {
 	Type string `json:"typ"`
+}
+
+type TokenClaims struct {
+	ClientType string          `json:"client"`
+	ID         uint            `json:"id"`
+	Issued     jwt.NumericTime `json:"iat"`
 }
 
 func CreateToken(userId uint, clientType, tokenSecret string) (string, error) {
@@ -25,6 +32,26 @@ func CreateToken(userId uint, clientType, tokenSecret string) (string, error) {
 	return string(token), signError
 }
 
-func DecodeToken(token, tokenSecret string) {
+func DecodeToken(token string) (TokenClaims, error) {
+	invalidToken := errors.New("invalid token")
+	tokenClaims := TokenClaims{}
+	claims, parseError := jwt.ParseWithoutCheck([]byte(token))
+	if parseError != nil {
+		return tokenClaims, parseError
+	}
 
+	if claims.Issued == nil {
+		return tokenClaims, invalidToken
+	}
+	tokenClaims.Issued = *claims.Issued
+	customClaimsString, _ := json.Marshal(claims.Set)
+	parseError = json.Unmarshal(customClaimsString, &tokenClaims)
+	if parseError != nil {
+		return tokenClaims, parseError
+	}
+	if tokenClaims.ID == 0 || tokenClaims.ClientType == "" {
+		return tokenClaims, invalidToken
+	}
+
+	return tokenClaims, nil
 }
