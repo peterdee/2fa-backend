@@ -8,6 +8,7 @@ require (
 	github.com/gofiber/helmet/v2 v2.2.13
 	github.com/joho/godotenv v1.4.0
 	github.com/julyskies/gohelpers v0.0.0-20210803104644-c71779c2e815
+  github.com/pascaldekloe/jwt v1.12.0
 	gorm.io/driver/postgres v1.3.7
 	gorm.io/gorm v1.23.6
 )

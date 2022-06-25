@@ -109,7 +109,23 @@ func signUpController(context *fiber.Ctx) error {
 		})
 	}
 
-	// TODO: generate JWT
+	token, signError := utilities.CreateToken(newUser.ID, clientType, tokenSecret)
+	if signError != nil {
+		return utilities.Response(utilities.ResponsePayloadStruct{
+			Context: context,
+			Info:    configuration.RESPONSE_MESSAGES.InternalServerError,
+			Status:  fiber.StatusInternalServerError,
+		})
+	}
 
-	return utilities.Response(utilities.ResponsePayloadStruct{Context: context})
+	return utilities.Response(utilities.ResponsePayloadStruct{
+		Context: context,
+		Data: fiber.Map{
+			"token": token,
+			"user": fiber.Map{
+				"id":    newUser.ID,
+				"login": newUser.Login,
+			},
+		},
+	})
 }
