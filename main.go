@@ -14,8 +14,10 @@ import (
 
 	authAPI "backend2fa/apis/auth"
 	indexAPI "backend2fa/apis/index"
+	passwordAPI "backend2fa/apis/password"
 	"backend2fa/configuration"
 	"backend2fa/database"
+	"backend2fa/utilities"
 )
 
 func main() {
@@ -29,7 +31,9 @@ func main() {
 
 	database.Connect()
 
-	app := fiber.New()
+	app := fiber.New(fiber.Config{
+		ErrorHandler: utilities.CustomErrorHandler,
+	})
 
 	app.Use(compress.New(compress.Config{
 		Level: compress.LevelDefault,
@@ -43,6 +47,7 @@ func main() {
 
 	authAPI.Initialize(app)
 	indexAPI.Initialize(app)
+	passwordAPI.Initialize(app)
 
 	port := os.Getenv("PORT")
 	if port == "" {

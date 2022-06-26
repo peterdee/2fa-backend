@@ -2,19 +2,18 @@ package middlewares
 
 import (
 	"github.com/gofiber/fiber/v2"
+
+	"backend2fa/configuration"
 )
 
 func Authorize(context *fiber.Ctx) error {
 	token := context.Get(fiber.HeaderAuthorization)
 	if token == "" {
-		return fiber.NewError(fiber.StatusUnauthorized, "TEST")
-		// return utilities.Response(utilities.ResponsePayloadStruct{
-		// 	Context: context,
-		// 	Info:    configuration.RESPONSE_MESSAGES.MissingToken,
-		// 	Status:  fiber.StatusUnauthorized,
-		// })
+		return fiber.NewError(
+			fiber.StatusUnauthorized,
+			configuration.RESPONSE_MESSAGES.MissingToken,
+		)
 	}
 
-	// return context.Next(*fiber.NewError(fiber.StatusUnauthorized, "TEST"))
 	return fiber.NewError(fiber.StatusUnauthorized, "TEST")
 }

@@ -1,4 +1,4 @@
-package auth
+package index
 
 import "github.com/gofiber/fiber/v2"
 
