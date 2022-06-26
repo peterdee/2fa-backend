@@ -9,5 +9,5 @@ import (
 func Initialize(app *fiber.App) {
 	api := app.Group("/api/password")
 
-	api.Post("/", middlewares.Authorize, changePasswordController)
+	api.Patch("/", middlewares.Authorize, changePasswordController)
 }
