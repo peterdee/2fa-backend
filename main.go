@@ -15,6 +15,7 @@ import (
 	authAPI "backend2fa/apis/auth"
 	indexAPI "backend2fa/apis/index"
 	passwordAPI "backend2fa/apis/password"
+	profileAPI "backend2fa/apis/profile"
 	"backend2fa/configuration"
 	"backend2fa/database"
 	"backend2fa/utilities"
@@ -48,6 +49,7 @@ func main() {
 	authAPI.Initialize(app)
 	indexAPI.Initialize(app)
 	passwordAPI.Initialize(app)
+	profileAPI.Initialize(app)
 
 	port := os.Getenv("PORT")
 	if port == "" {

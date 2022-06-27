@@ -6,7 +6,6 @@ import (
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 
 	"backend2fa/database/models"
 )
@@ -23,9 +22,7 @@ func Connect() {
 		user + " password=" + password + " dbname=" +
 		databaseName + " port=" + port + " sslmode=disable"
 
-	instance, connectionError := gorm.Open(postgres.Open(dsn), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Info),
-	})
+	instance, connectionError := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if connectionError != nil {
 		log.Fatal(connectionError)
 	}
