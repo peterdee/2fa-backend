@@ -20,6 +20,7 @@ func Response(payload ResponsePayloadStruct) error {
 
 	responseStruct := fiber.Map{
 		"datetime": gohelpers.MakeTimestamp(),
+		"handling": gohelpers.MakeTimestamp() - payload.Context.Locals("handling").(int64),
 		"info":     info,
 		"request":  payload.Context.OriginalURL(),
 		"status":   status,

@@ -18,6 +18,7 @@ import (
 	profileAPI "backend2fa/apis/profile"
 	"backend2fa/configuration"
 	"backend2fa/database"
+	"backend2fa/middlewares"
 	"backend2fa/utilities"
 )
 
@@ -36,6 +37,7 @@ func main() {
 		ErrorHandler: utilities.CustomErrorHandler,
 	})
 
+	app.Use(middlewares.HandlingTime)
 	app.Use(compress.New(compress.Config{
 		Level: compress.LevelDefault,
 	}))
