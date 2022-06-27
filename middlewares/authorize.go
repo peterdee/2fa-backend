@@ -26,8 +26,8 @@ func Authorize(context *fiber.Ctx) error {
 		)
 	}
 
-	var tokenSecretRecord = models.TokenSecrets{UserID: tokenClaims.ID}
-	result := database.Connection.Find(&tokenSecretRecord)
+	var tokenSecretRecord models.TokenSecrets
+	result := database.Connection.Where("user_id = ?", tokenClaims.ID).Find(&tokenSecretRecord)
 	if result.Error != nil {
 		return fiber.NewError(fiber.StatusInternalServerError)
 	}

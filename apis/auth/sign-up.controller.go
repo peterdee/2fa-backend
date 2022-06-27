@@ -15,11 +15,7 @@ import (
 func signUpController(context *fiber.Ctx) error {
 	payload := new(signUpPayload)
 	if err := context.BodyParser(payload); err != nil {
-		return utilities.Response(utilities.ResponsePayloadStruct{
-			Context: context,
-			Info:    configuration.RESPONSE_MESSAGES.InternalServerError,
-			Status:  fiber.StatusInternalServerError,
-		})
+		return fiber.NewError(fiber.StatusInternalServerError)
 	}
 
 	clientType := strings.Trim(payload.ClientType, " ")
@@ -29,93 +25,62 @@ func signUpController(context *fiber.Ctx) error {
 	recoveryQuestion := strings.Trim(payload.RecoveryQuestion, " ")
 	if clientType == "" || login == "" || password == "" ||
 		recoveryAnswer == "" || recoveryQuestion == "" {
-		return utilities.Response(utilities.ResponsePayloadStruct{
-			Context: context,
-			Info:    configuration.RESPONSE_MESSAGES.MissingData,
-			Status:  fiber.StatusBadRequest,
-		})
+		return fiber.NewError(
+			fiber.StatusBadRequest,
+			configuration.RESPONSE_MESSAGES.MissingData,
+		)
 	}
 
 	clients := gohelpers.ObjectValues(configuration.CLIENT_TYPES)
 	if !gohelpers.IncludesString(clients, clientType) {
-		return utilities.Response(utilities.ResponsePayloadStruct{
-			Context: context,
-			Info:    configuration.RESPONSE_MESSAGES.InvalidData,
-			Status:  fiber.StatusBadRequest,
-		})
+		return fiber.NewError(
+			fiber.StatusBadRequest,
+			configuration.RESPONSE_MESSAGES.InvalidData,
+		)
 	}
 
 	var existingUsers []models.Users
 	result := database.Connection.Where("login = ?", login).Find(&existingUsers)
 	if result.Error != nil {
-		return utilities.Response(utilities.ResponsePayloadStruct{
-			Context: context,
-			Info:    configuration.RESPONSE_MESSAGES.InternalServerError,
-			Status:  fiber.StatusInternalServerError,
-		})
+		return fiber.NewError(fiber.StatusInternalServerError)
 	}
 	if result.RowsAffected > 0 {
-		return utilities.Response(utilities.ResponsePayloadStruct{
-			Context: context,
-			Info:    configuration.RESPONSE_MESSAGES.LoginAlreadyInUse,
-			Status:  fiber.StatusBadRequest,
-		})
+		return fiber.NewError(
+			fiber.StatusBadRequest,
+			configuration.RESPONSE_MESSAGES.LoginAlreadyInUse,
+		)
 	}
 
 	newUser := models.Users{Login: login}
 	result = database.Connection.Create(&newUser)
 	if result.Error != nil {
-		return utilities.Response(utilities.ResponsePayloadStruct{
-			Context: context,
-			Info:    configuration.RESPONSE_MESSAGES.InternalServerError,
-			Status:  fiber.StatusInternalServerError,
-		})
+		return fiber.NewError(fiber.StatusInternalServerError)
 	}
 
 	passwordHash, hashError := utilities.CreateHash(password)
 	if hashError != nil {
-		return utilities.Response(utilities.ResponsePayloadStruct{
-			Context: context,
-			Info:    configuration.RESPONSE_MESSAGES.InternalServerError,
-			Status:  fiber.StatusInternalServerError,
-		})
+		return fiber.NewError(fiber.StatusInternalServerError)
 	}
 	newPassword := models.Passwords{Hash: passwordHash, UserID: newUser.ID}
 	result = database.Connection.Create(&newPassword)
 	if result.Error != nil {
-		return utilities.Response(utilities.ResponsePayloadStruct{
-			Context: context,
-			Info:    configuration.RESPONSE_MESSAGES.InternalServerError,
-			Status:  fiber.StatusInternalServerError,
-		})
+		return fiber.NewError(fiber.StatusInternalServerError)
 	}
 
 	tokenKey := utilities.CreateTokenKey(newUser.ID)
 	tokenSecret, secretError := utilities.CreateHash(tokenKey)
 	if secretError != nil {
-		return utilities.Response(utilities.ResponsePayloadStruct{
-			Context: context,
-			Info:    configuration.RESPONSE_MESSAGES.InternalServerError,
-			Status:  fiber.StatusInternalServerError,
-		})
+		return fiber.NewError(fiber.StatusInternalServerError)
 	}
 	newTokenSecret := models.TokenSecrets{Secret: tokenSecret, UserID: newUser.ID}
 	result = database.Connection.Create(&newTokenSecret)
 	if result.Error != nil {
-		return utilities.Response(utilities.ResponsePayloadStruct{
-			Context: context,
-			Info:    configuration.RESPONSE_MESSAGES.InternalServerError,
-			Status:  fiber.StatusInternalServerError,
-		})
+		return fiber.NewError(fiber.StatusInternalServerError)
 	}
 
 	token, signError := utilities.CreateToken(newUser.ID, clientType, tokenSecret)
 	if signError != nil {
-		return utilities.Response(utilities.ResponsePayloadStruct{
-			Context: context,
-			Info:    configuration.RESPONSE_MESSAGES.InternalServerError,
-			Status:  fiber.StatusInternalServerError,
-		})
+		return fiber.NewError(fiber.StatusInternalServerError)
 	}
 
 	return utilities.Response(utilities.ResponsePayloadStruct{

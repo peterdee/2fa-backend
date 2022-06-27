@@ -12,12 +12,13 @@ type EnvironmentsStruct struct {
 }
 
 type ResponseMessagesStruct struct {
-	InternalServerError string
-	InvalidData         string
-	InvalidToken        string
-	LoginAlreadyInUse   string
-	MissingData         string
-	MissingToken        string
-	OK                  string
-	Unauthorized        string
+	InternalServerError  string
+	InvalidData          string
+	InvalidToken         string
+	LoginAlreadyInUse    string
+	MissingData          string
+	MissingToken         string
+	OK                   string
+	OldPasswordIsInvalid string
+	Unauthorized         string
 }

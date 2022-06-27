@@ -27,16 +27,43 @@ func changePasswordController(context *fiber.Ctx) error {
 	}
 
 	userId := context.Locals("userId").(uint)
-	var passwordRecord = models.Passwords{UserID: userId}
-	result := database.Connection.Find(&passwordRecord)
+	var passwordRecord models.Passwords
+	result := database.Connection.Where("user_id = ?", userId).Find(&passwordRecord)
 	if result.Error != nil {
-
+		return fiber.NewError(fiber.StatusInternalServerError)
 	}
 	if result.RowsAffected == 0 {
-
+		return fiber.NewError(
+			fiber.StatusUnauthorized,
+			configuration.RESPONSE_MESSAGES.Unauthorized,
+		)
 	}
 
-	return utilities.Response(utilities.ResponsePayloadStruct{
-		Context: context,
-	})
+	oldPasswordIsValid, compareError := utilities.CompareValueWithHash(
+		oldPassword,
+		passwordRecord.Hash,
+	)
+	if compareError != nil {
+		return fiber.NewError(fiber.StatusInternalServerError)
+	}
+	if !oldPasswordIsValid {
+		return fiber.NewError(
+			fiber.StatusBadRequest,
+			configuration.RESPONSE_MESSAGES.OldPasswordIsInvalid,
+		)
+	}
+
+	newPasswordHash, hashError := utilities.CreateHash(newPassword)
+	if hashError != nil {
+		return fiber.NewError(fiber.StatusInternalServerError)
+	}
+
+	result = database.Connection.Model(&models.Passwords{}).
+		Where("id = ?", passwordRecord.ID).
+		Update("hash", newPasswordHash)
+	if result.Error != nil {
+		return fiber.NewError(fiber.StatusInternalServerError)
+	}
+
+	return utilities.Response(utilities.ResponsePayloadStruct{Context: context})
 }

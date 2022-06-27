@@ -14,12 +14,13 @@ var ENVS = EnvironmentsStruct{
 }
 
 var RESPONSE_MESSAGES = ResponseMessagesStruct{
-	InternalServerError: "INTERNAL_SERVER_ERROR",
-	InvalidData:         "INVALID_DATA",
-	InvalidToken:        "INVALID_TOKEN",
-	LoginAlreadyInUse:   "LOGIN_ALREADY_IN_USE",
-	MissingData:         "MISSING_DATA",
-	MissingToken:        "MISSING_TOKEN",
-	OK:                  "OK",
-	Unauthorized:        "UNAUTHORIZED",
+	InternalServerError:  "INTERNAL_SERVER_ERROR",
+	InvalidData:          "INVALID_DATA",
+	InvalidToken:         "INVALID_TOKEN",
+	LoginAlreadyInUse:    "LOGIN_ALREADY_IN_USE",
+	MissingData:          "MISSING_DATA",
+	MissingToken:         "MISSING_TOKEN",
+	OK:                   "OK",
+	OldPasswordIsInvalid: "OLD_PASSWORD_IS_INVALID",
+	Unauthorized:         "UNAUTHORIZED",
 }
