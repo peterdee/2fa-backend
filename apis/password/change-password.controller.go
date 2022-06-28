@@ -26,6 +26,13 @@ func changePasswordController(context *fiber.Ctx) error {
 		)
 	}
 
+	if len(newPassword) < configuration.PASSWORD_MIN_LENGTH {
+		return fiber.NewError(
+			fiber.StatusBadRequest,
+			configuration.RESPONSE_MESSAGES.PasswordIsTooShort,
+		)
+	}
+
 	userId := context.Locals("userId").(uint)
 	var passwordRecord models.Passwords
 	result := database.Connection.Where("user_id = ?", userId).Find(&passwordRecord)
