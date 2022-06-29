@@ -28,19 +28,6 @@ func signInController(context *fiber.Ctx) error {
 		)
 	}
 
-	if len(login) > configuration.LOGIN_MAX_LENGTH {
-		return fiber.NewError(
-			fiber.StatusBadRequest,
-			configuration.RESPONSE_MESSAGES.LoginIsTooLong,
-		)
-	}
-	if len(password) < configuration.PASSWORD_MIN_LENGTH {
-		return fiber.NewError(
-			fiber.StatusBadRequest,
-			configuration.RESPONSE_MESSAGES.PasswordIsTooShort,
-		)
-	}
-
 	clients := gohelpers.ObjectValues(configuration.CLIENT_TYPES)
 	if !gohelpers.IncludesString(clients, clientType) {
 		return fiber.NewError(

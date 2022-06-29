@@ -40,7 +40,7 @@ func signUpController(context *fiber.Ctx) error {
 	if len(password) < configuration.PASSWORD_MIN_LENGTH {
 		return fiber.NewError(
 			fiber.StatusBadRequest,
-			configuration.RESPONSE_MESSAGES.LoginIsTooLong,
+			configuration.RESPONSE_MESSAGES.PasswordIsTooShort,
 		)
 	}
 
