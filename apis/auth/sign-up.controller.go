@@ -43,10 +43,10 @@ func signUpController(context *fiber.Ctx) error {
 			configuration.RESPONSE_MESSAGES.PasswordIsTooShort,
 		)
 	}
-	if gohelpers.IncludesString(strings.Split(login, ""), " ") {
+	if !utilities.IsAlphanumeric(login) {
 		return fiber.NewError(
 			fiber.StatusBadRequest,
-			configuration.RESPONSE_MESSAGES.LoginContainsSpaces,
+			configuration.RESPONSE_MESSAGES.InvalidLogin,
 		)
 	}
 	if gohelpers.IncludesString(strings.Split(password, ""), " ") {

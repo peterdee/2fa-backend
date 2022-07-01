@@ -20,9 +20,9 @@ var PASSWORD_MIN_LENGTH int = 8
 var RESPONSE_MESSAGES = ResponseMessagesStruct{
 	InternalServerError:    "INTERNAL_SERVER_ERROR",
 	InvalidData:            "INVALID_DATA",
+	InvalidLogin:           "INVALID_LOGIN",
 	InvalidToken:           "INVALID_TOKEN",
 	LoginAlreadyInUse:      "LOGIN_ALREADY_IN_USE",
-	LoginContainsSpaces:    "LOGIN_CONTAINS_SPACES",
 	LoginIsTooLong:         "LOGIN_IS_TOO_LONG",
 	MissingData:            "MISSING_DATA",
 	MissingToken:           "MISSING_TOKEN",

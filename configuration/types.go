@@ -14,9 +14,9 @@ type EnvironmentsStruct struct {
 type ResponseMessagesStruct struct {
 	InternalServerError    string
 	InvalidData            string
+	InvalidLogin           string
 	InvalidToken           string
 	LoginAlreadyInUse      string
-	LoginContainsSpaces    string
 	LoginIsTooLong         string
 	MissingData            string
 	MissingToken           string
