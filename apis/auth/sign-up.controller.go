@@ -19,7 +19,7 @@ func signUpController(context *fiber.Ctx) error {
 	}
 
 	clientType := strings.Trim(payload.ClientType, " ")
-	login := strings.Trim(payload.Login, " ")
+	login := strings.ToLower(strings.Trim(payload.Login, " "))
 	password := strings.Trim(payload.Password, " ")
 	recoveryAnswer := strings.Trim(payload.RecoveryAnswer, " ")
 	recoveryQuestion := strings.Trim(payload.RecoveryQuestion, " ")
@@ -41,6 +41,18 @@ func signUpController(context *fiber.Ctx) error {
 		return fiber.NewError(
 			fiber.StatusBadRequest,
 			configuration.RESPONSE_MESSAGES.PasswordIsTooShort,
+		)
+	}
+	if gohelpers.IncludesString(strings.Split(login, ""), " ") {
+		return fiber.NewError(
+			fiber.StatusBadRequest,
+			configuration.RESPONSE_MESSAGES.LoginContainsSpaces,
+		)
+	}
+	if gohelpers.IncludesString(strings.Split(password, ""), " ") {
+		return fiber.NewError(
+			fiber.StatusBadRequest,
+			configuration.RESPONSE_MESSAGES.PasswordContainsSpaces,
 		)
 	}
 

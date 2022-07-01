@@ -19,7 +19,7 @@ func signInController(context *fiber.Ctx) error {
 	}
 
 	clientType := strings.Trim(payload.ClientType, " ")
-	login := strings.Trim(payload.Login, " ")
+	login := strings.ToLower(strings.Trim(payload.Login, " "))
 	password := strings.Trim(payload.Password, " ")
 	if clientType == "" || login == "" || password == "" {
 		return fiber.NewError(

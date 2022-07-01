@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/julyskies/gohelpers"
 
 	"backend2fa/configuration"
 	"backend2fa/database"
@@ -30,6 +31,12 @@ func changePasswordController(context *fiber.Ctx) error {
 		return fiber.NewError(
 			fiber.StatusBadRequest,
 			configuration.RESPONSE_MESSAGES.PasswordIsTooShort,
+		)
+	}
+	if gohelpers.IncludesString(strings.Split(newPassword, ""), " ") {
+		return fiber.NewError(
+			fiber.StatusBadRequest,
+			configuration.RESPONSE_MESSAGES.PasswordContainsSpaces,
 		)
 	}
 
