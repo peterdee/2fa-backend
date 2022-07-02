@@ -60,6 +60,17 @@ func signInController(context *fiber.Ctx) error {
 		)
 	}
 
+	isValid, comparisonError := utilities.CompareValueWithHash(password, passwordRecord.Hash)
+	if comparisonError != nil {
+		return fiber.NewError(fiber.StatusInternalServerError)
+	}
+	if !isValid {
+		return fiber.NewError(
+			fiber.StatusUnauthorized,
+			configuration.RESPONSE_MESSAGES.Unauthorized,
+		)
+	}
+
 	var tokenSecretRecord models.TokenSecrets
 	result = database.Connection.Where("user_id = ?", user.ID).Find(&tokenSecretRecord)
 	if result.Error != nil {

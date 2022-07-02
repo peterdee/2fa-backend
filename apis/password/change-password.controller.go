@@ -5,6 +5,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/julyskies/gohelpers"
+	"gorm.io/gorm"
 
 	"backend2fa/configuration"
 	"backend2fa/database"
@@ -52,6 +53,17 @@ func changePasswordController(context *fiber.Ctx) error {
 			configuration.RESPONSE_MESSAGES.Unauthorized,
 		)
 	}
+	var tokenSecretRecord models.TokenSecrets
+	result = database.Connection.Where("user_id = ?", userId).Find(&tokenSecretRecord)
+	if result.Error != nil {
+		return fiber.NewError(fiber.StatusInternalServerError)
+	}
+	if result.RowsAffected == 0 {
+		return fiber.NewError(
+			fiber.StatusUnauthorized,
+			configuration.RESPONSE_MESSAGES.Unauthorized,
+		)
+	}
 
 	oldPasswordIsValid, compareError := utilities.CompareValueWithHash(
 		oldPassword,
@@ -71,11 +83,27 @@ func changePasswordController(context *fiber.Ctx) error {
 	if hashError != nil {
 		return fiber.NewError(fiber.StatusInternalServerError)
 	}
+	newTokenSecret, secretHashError := utilities.CreateHash(utilities.CreateTokenKey(userId))
+	if secretHashError != nil {
+		return fiber.NewError(fiber.StatusInternalServerError)
+	}
 
-	result = database.Connection.Model(&models.Passwords{}).
-		Where("id = ?", passwordRecord.ID).
-		Update("hash", newPasswordHash)
-	if result.Error != nil {
+	transactionError := database.Connection.Transaction(func(instance *gorm.DB) error {
+		result = instance.Model(&models.Passwords{}).
+			Where("id = ?", passwordRecord.ID).
+			Update("hash", newPasswordHash)
+		if result.Error != nil {
+			return result.Error
+		}
+		result = instance.Model(&models.TokenSecrets{}).
+			Where("id = ?", tokenSecretRecord.ID).
+			Update("secret", newTokenSecret)
+		if result.Error != nil {
+			return result.Error
+		}
+		return nil
+	})
+	if transactionError != nil {
 		return fiber.NewError(fiber.StatusInternalServerError)
 	}
 
