@@ -41,6 +41,7 @@ func changePasswordController(context *fiber.Ctx) error {
 		)
 	}
 
+	clientType := context.Locals("client").(string)
 	userId := context.Locals("userId").(uint)
 	var passwordRecord models.Passwords
 	result := database.Connection.Where("user_id = ?", userId).Find(&passwordRecord)
@@ -107,5 +108,15 @@ func changePasswordController(context *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusInternalServerError)
 	}
 
-	return utilities.Response(utilities.ResponsePayloadStruct{Context: context})
+	token, signError := utilities.CreateToken(userId, clientType, newTokenSecret)
+	if signError != nil {
+		return fiber.NewError(fiber.StatusInternalServerError)
+	}
+
+	return utilities.Response(utilities.ResponsePayloadStruct{
+		Data: fiber.Map{
+			"token": token,
+		},
+		Context: context,
+	})
 }
