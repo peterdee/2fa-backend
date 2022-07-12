@@ -31,7 +31,6 @@ func Connect() {
 	instance.AutoMigrate(&models.Passwords{})
 	instance.AutoMigrate(&models.Secrets{})
 	instance.AutoMigrate(&models.TokenSecrets{})
-	instance.AutoMigrate(&models.UserDevices{})
 
 	Connection = instance
 }

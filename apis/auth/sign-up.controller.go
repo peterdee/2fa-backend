@@ -30,7 +30,6 @@ func signUpController(context *fiber.Ctx) error {
 			configuration.RESPONSE_MESSAGES.MissingData,
 		)
 	}
-
 	if len(login) > configuration.LOGIN_MAX_LENGTH {
 		return fiber.NewError(
 			fiber.StatusBadRequest,
@@ -76,7 +75,15 @@ func signUpController(context *fiber.Ctx) error {
 		)
 	}
 
-	newUser := models.Users{Login: login}
+	recoveryAnswerHash, hashError := utilities.CreateHash(recoveryAnswer)
+	if hashError != nil {
+		return fiber.NewError(fiber.StatusInternalServerError)
+	}
+	newUser := models.Users{
+		Login:            login,
+		RecoveryAnswer:   recoveryAnswerHash,
+		RecoveryQuestion: recoveryQuestion,
+	}
 	result = database.Connection.Create(&newUser)
 	if result.Error != nil {
 		return fiber.NewError(fiber.StatusInternalServerError)

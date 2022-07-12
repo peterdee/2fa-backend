@@ -28,16 +28,16 @@ func changePasswordController(context *fiber.Ctx) error {
 		)
 	}
 
-	if len(newPassword) < configuration.PASSWORD_MIN_LENGTH {
-		return fiber.NewError(
-			fiber.StatusBadRequest,
-			configuration.RESPONSE_MESSAGES.PasswordIsTooShort,
-		)
-	}
 	if gohelpers.IncludesString(strings.Split(newPassword, ""), " ") {
 		return fiber.NewError(
 			fiber.StatusBadRequest,
 			configuration.RESPONSE_MESSAGES.PasswordContainsSpaces,
+		)
+	}
+	if len(newPassword) < configuration.PASSWORD_MIN_LENGTH {
+		return fiber.NewError(
+			fiber.StatusBadRequest,
+			configuration.RESPONSE_MESSAGES.PasswordIsTooShort,
 		)
 	}
 
