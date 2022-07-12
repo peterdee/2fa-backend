@@ -12,10 +12,11 @@ import (
 	"github.com/gofiber/helmet/v2"
 	"github.com/joho/godotenv"
 
+	accountAPI "backend2fa/apis/account"
 	authAPI "backend2fa/apis/auth"
 	indexAPI "backend2fa/apis/index"
 	passwordAPI "backend2fa/apis/password"
-	profileAPI "backend2fa/apis/profile"
+	recoveryAPI "backend2fa/apis/recovery"
 	"backend2fa/configuration"
 	"backend2fa/database"
 	"backend2fa/middlewares"
@@ -48,10 +49,11 @@ func main() {
 	app.Use(helmet.New())
 	app.Use(logger.New())
 
+	accountAPI.Initialize(app)
 	authAPI.Initialize(app)
 	indexAPI.Initialize(app)
 	passwordAPI.Initialize(app)
-	profileAPI.Initialize(app)
+	recoveryAPI.Initialize(app)
 
 	port := os.Getenv("PORT")
 	if port == "" {

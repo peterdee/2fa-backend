@@ -1,4 +1,4 @@
-package profile
+package account
 
 import (
 	"github.com/gofiber/fiber/v2"
@@ -8,7 +8,7 @@ import (
 	"backend2fa/utilities"
 )
 
-func deleteProfileController(context *fiber.Ctx) error {
+func deleteAccountController(context *fiber.Ctx) error {
 	userId := context.Locals("userId").(uint)
 
 	result := database.Connection.Delete(&models.Users{}, userId)
