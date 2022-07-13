@@ -15,7 +15,7 @@ var ENVS = EnvironmentsStruct{
 
 var LOGIN_MAX_LENGTH int = 16
 
-var MAX_FAILED_SIGN_IN_ATTEMPTS int = 9
+var MAX_FAILED_SIGN_IN_ATTEMPTS int = 10
 
 var PASSWORD_MIN_LENGTH int = 8
 

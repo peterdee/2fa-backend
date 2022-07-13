@@ -20,8 +20,8 @@ func updatePasswordController(context *fiber.Ctx) error {
 	}
 
 	clientType := strings.Trim(payload.ClientType, " ")
-	newPassword := strings.ToLower(strings.Trim(payload.NewPassword, " "))
-	recoveryAnswer := strings.ToLower(strings.Trim(payload.RecoveryAnswer, " "))
+	newPassword := strings.Trim(payload.NewPassword, " ")
+	recoveryAnswer := strings.Trim(payload.RecoveryAnswer, " ")
 	userId := payload.UserID
 	if clientType == "" || newPassword == "" ||
 		recoveryAnswer == "" || userId == 0 {

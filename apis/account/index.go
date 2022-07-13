@@ -10,4 +10,5 @@ func Initialize(app *fiber.App) {
 	api := app.Group("/api/account")
 
 	api.Delete("/", middlewares.Authorize, deleteAccountController)
+	api.Patch("/recovery-data", middlewares.Authorize, updateRecoveryDataController)
 }

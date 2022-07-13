@@ -57,7 +57,7 @@ func Authorize(context *fiber.Ctx) error {
 			configuration.RESPONSE_MESSAGES.Unauthorized,
 		)
 	}
-	if user.FailedSignInAttempts > configuration.MAX_FAILED_SIGN_IN_ATTEMPTS {
+	if user.FailedSignInAttempts >= configuration.MAX_FAILED_SIGN_IN_ATTEMPTS {
 		return fiber.NewError(
 			fiber.StatusUnauthorized,
 			configuration.RESPONSE_MESSAGES.AccountSuspended,
