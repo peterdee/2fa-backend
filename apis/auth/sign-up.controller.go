@@ -80,9 +80,9 @@ func signUpController(context *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusInternalServerError)
 	}
 	newUser := models.Users{
-		Login:            login,
-		RecoveryAnswer:   recoveryAnswerHash,
-		RecoveryQuestion: recoveryQuestion,
+		Login:              login,
+		RecoveryAnswerHash: recoveryAnswerHash,
+		RecoveryQuestion:   recoveryQuestion,
 	}
 	result = database.Connection.Create(&newUser)
 	if result.Error != nil {

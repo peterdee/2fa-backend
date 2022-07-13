@@ -12,6 +12,7 @@ type EnvironmentsStruct struct {
 }
 
 type ResponseMessagesStruct struct {
+	AccountSuspended       string
 	InternalServerError    string
 	InvalidData            string
 	InvalidLogin           string

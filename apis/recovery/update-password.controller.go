@@ -90,7 +90,7 @@ func updatePasswordController(context *fiber.Ctx) error {
 
 	isValid, comparisonError := utilities.CompareValueWithHash(
 		recoveryAnswer,
-		user.RecoveryAnswer,
+		user.RecoveryAnswerHash,
 	)
 	if comparisonError != nil {
 		return fiber.NewError(fiber.StatusInternalServerError)
@@ -122,6 +122,12 @@ func updatePasswordController(context *fiber.Ctx) error {
 		result = instance.Model(&models.TokenSecrets{}).
 			Where("id = ?", tokenSecretRecord.ID).
 			Update("secret", newTokenSecret)
+		if result.Error != nil {
+			return result.Error
+		}
+		result = instance.Model(&models.Users{}).
+			Where("id = ?", user.ID).
+			Update("failed_sign_in_attempts", 0)
 		if result.Error != nil {
 			return result.Error
 		}

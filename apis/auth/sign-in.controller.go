@@ -47,6 +47,12 @@ func signInController(context *fiber.Ctx) error {
 			configuration.RESPONSE_MESSAGES.Unauthorized,
 		)
 	}
+	if user.FailedSignInAttempts > configuration.MAX_FAILED_SIGN_IN_ATTEMPTS {
+		return fiber.NewError(
+			fiber.StatusUnauthorized,
+			configuration.RESPONSE_MESSAGES.AccountSuspended,
+		)
+	}
 
 	var passwordRecord models.Passwords
 	result = database.Connection.Where("user_id = ?", user.ID).Find(&passwordRecord)
@@ -65,6 +71,13 @@ func signInController(context *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusInternalServerError)
 	}
 	if !isValid {
+		result = database.Connection.Model(&models.Users{}).
+			Where("id = ?", user.ID).
+			Update("failed_sign_in_attempts", user.FailedSignInAttempts+1)
+		if result.Error != nil {
+			return fiber.NewError(fiber.StatusInternalServerError)
+		}
+
 		return fiber.NewError(
 			fiber.StatusUnauthorized,
 			configuration.RESPONSE_MESSAGES.Unauthorized,
@@ -85,6 +98,13 @@ func signInController(context *fiber.Ctx) error {
 
 	token, signError := utilities.CreateToken(user.ID, clientType, tokenSecretRecord.Secret)
 	if signError != nil {
+		return fiber.NewError(fiber.StatusInternalServerError)
+	}
+
+	result = database.Connection.Model(&models.Users{}).
+		Where("id = ?", user.ID).
+		Update("failed_sign_in_attempts", 0)
+	if result.Error != nil {
 		return fiber.NewError(fiber.StatusInternalServerError)
 	}
 

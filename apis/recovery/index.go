@@ -6,5 +6,5 @@ func Initialize(app *fiber.App) {
 	api := app.Group("/api/recovery")
 
 	api.Post("/check", checkLoginController)
-	api.Post("/update", updatePasswordController)
+	api.Patch("/update", updatePasswordController)
 }

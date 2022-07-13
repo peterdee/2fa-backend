@@ -15,9 +15,12 @@ var ENVS = EnvironmentsStruct{
 
 var LOGIN_MAX_LENGTH int = 16
 
+var MAX_FAILED_SIGN_IN_ATTEMPTS int = 9
+
 var PASSWORD_MIN_LENGTH int = 8
 
 var RESPONSE_MESSAGES = ResponseMessagesStruct{
+	AccountSuspended:       "ACCOUNT_SUSPENDED",
 	InternalServerError:    "INTERNAL_SERVER_ERROR",
 	InvalidData:            "INVALID_DATA",
 	InvalidLogin:           "INVALID_LOGIN",
