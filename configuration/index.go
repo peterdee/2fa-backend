@@ -21,6 +21,7 @@ var RESPONSE_MESSAGES = ResponseMessagesStruct{
 	InternalServerError:    "INTERNAL_SERVER_ERROR",
 	InvalidData:            "INVALID_DATA",
 	InvalidLogin:           "INVALID_LOGIN",
+	InvalidRecoveryAnswer:  "INVALID_RECOVERY_ANSWER",
 	InvalidToken:           "INVALID_TOKEN",
 	LoginAlreadyInUse:      "LOGIN_ALREADY_IN_USE",
 	LoginIsTooLong:         "LOGIN_IS_TOO_LONG",

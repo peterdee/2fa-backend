@@ -15,6 +15,7 @@ type ResponseMessagesStruct struct {
 	InternalServerError    string
 	InvalidData            string
 	InvalidLogin           string
+	InvalidRecoveryAnswer  string
 	InvalidToken           string
 	LoginAlreadyInUse      string
 	LoginIsTooLong         string
