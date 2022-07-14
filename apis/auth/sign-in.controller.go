@@ -71,11 +71,24 @@ func signInController(context *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusInternalServerError)
 	}
 	if !isValid {
+		updatedCount := user.FailedSignInAttempts + 1
 		result = database.Connection.Model(&models.Users{}).
 			Where("id = ?", user.ID).
-			Update("failed_sign_in_attempts", user.FailedSignInAttempts+1)
+			Update("failed_sign_in_attempts", updatedCount)
 		if result.Error != nil {
 			return fiber.NewError(fiber.StatusInternalServerError)
+		}
+		if updatedCount >= configuration.MAX_FAILED_SIGN_IN_ATTEMPTS {
+			newTokenSecret, hashError := utilities.CreateHash(utilities.CreateTokenKey(user.ID))
+			if hashError != nil {
+				return fiber.NewError(fiber.StatusInternalServerError)
+			}
+			result = database.Connection.Model(&models.TokenSecrets{}).
+				Where("user_id = ?", user.ID).
+				Update("secret", newTokenSecret)
+			if result.Error != nil {
+				return fiber.NewError(fiber.StatusInternalServerError)
+			}
 		}
 
 		return fiber.NewError(

@@ -46,24 +46,6 @@ func Authorize(context *fiber.Ctx) error {
 		)
 	}
 
-	var user models.Users
-	result = database.Connection.Where("id = ?", tokenSecretRecord.UserID).Find(&user)
-	if result.Error != nil {
-		return fiber.NewError(fiber.StatusInternalServerError)
-	}
-	if result.RowsAffected == 0 {
-		return fiber.NewError(
-			fiber.StatusUnauthorized,
-			configuration.RESPONSE_MESSAGES.Unauthorized,
-		)
-	}
-	if user.FailedSignInAttempts >= configuration.MAX_FAILED_SIGN_IN_ATTEMPTS {
-		return fiber.NewError(
-			fiber.StatusUnauthorized,
-			configuration.RESPONSE_MESSAGES.AccountSuspended,
-		)
-	}
-
 	context.Locals("client", tokenClaims.ClientType)
 	context.Locals("userId", tokenClaims.ID)
 	return context.Next()
