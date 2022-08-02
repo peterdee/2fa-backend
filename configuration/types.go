@@ -32,6 +32,7 @@ type ResponseMessagesStruct struct {
 	OldPasswordIsInvalid   string
 	PasswordContainsSpaces string
 	PasswordIsTooShort     string
+	SecretAlreadyDeleted   string
 	SecretAlreadyExists    string
 	Unauthorized           string
 }

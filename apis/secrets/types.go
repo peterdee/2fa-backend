@@ -12,3 +12,8 @@ type addSecretPayload struct {
 	ScannedAt   int64  `json:"scannedAt"`
 	Secret      string `json:"secret"`
 }
+
+type updateSecretPayload struct {
+	AccountName string `json:"accountName"`
+	Issuer      string `json:"issuer"`
+}

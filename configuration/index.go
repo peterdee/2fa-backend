@@ -40,6 +40,7 @@ var RESPONSE_MESSAGES = ResponseMessagesStruct{
 	OldPasswordIsInvalid:   "OLD_PASSWORD_IS_INVALID",
 	PasswordContainsSpaces: "PASSWORD_CONTAINS_SPACES",
 	PasswordIsTooShort:     "PASSWORD_IS_TOO_SHORT",
+	SecretAlreadyDeleted:   "SECRET_ALREADY_DELETED",
 	SecretAlreadyExists:    "SECRET_ALREADY_EXISTS",
 	Unauthorized:           "UNAUTHORIZED",
 }

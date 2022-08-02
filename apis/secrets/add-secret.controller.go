@@ -52,8 +52,22 @@ func addSecretController(context *fiber.Ctx) error {
 		)
 	}
 
-	var existingRecord models.Secrets
-	result := database.Connection.Where("entry_id = ?", entryId).Find(&existingRecord)
+	userId := context.Locals("userId").(uint)
+	var existingDeletedRecord models.DeletedSecretIDs
+	result := database.Connection.
+		Where("entry_id = ? AND user_id = ?", entryId, userId).
+		Find(&existingDeletedRecord)
+	if result.RowsAffected > 0 {
+		return fiber.NewError(
+			fiber.StatusBadRequest,
+			configuration.RESPONSE_MESSAGES.SecretAlreadyDeleted,
+		)
+	}
+
+	var existingSecretRecord models.Secrets
+	result = database.Connection.
+		Where("entry_id = ? AND user_id = ?", entryId, userId).
+		Find(&existingSecretRecord)
 	if result.Error != nil {
 		return fiber.NewError(fiber.StatusInternalServerError)
 	}
@@ -64,7 +78,6 @@ func addSecretController(context *fiber.Ctx) error {
 		)
 	}
 
-	userId := context.Locals("userId").(uint)
 	newSecret := models.Secrets{
 		AccountName:    accountName,
 		Algorithm:      algorithm,
