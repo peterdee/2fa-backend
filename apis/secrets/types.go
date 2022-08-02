@@ -6,7 +6,7 @@ type addSecretPayload struct {
 	AuthType    string `json:"authType"`
 	Counter     uint   `json:"counter"`
 	Digits      uint   `json:"digits"`
-	EntryID     string `json"entryId"`
+	EntryID     string `json:"entryId"`
 	Issuer      string `json:"issuer"`
 	Period      uint   `json:"period"`
 	ScannedAt   int64  `json:"scannedAt"`
