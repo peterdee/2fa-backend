@@ -17,6 +17,7 @@ import (
 	indexAPI "backend2fa/apis/index"
 	passwordAPI "backend2fa/apis/password"
 	recoveryAPI "backend2fa/apis/recovery"
+	secretsAPI "backend2fa/apis/secrets"
 	"backend2fa/configuration"
 	"backend2fa/database"
 	"backend2fa/middlewares"
@@ -54,6 +55,7 @@ func main() {
 	indexAPI.Initialize(app)
 	passwordAPI.Initialize(app)
 	recoveryAPI.Initialize(app)
+	secretsAPI.Initialize(app)
 
 	port := os.Getenv("PORT")
 	if port == "" {

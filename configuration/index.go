@@ -1,5 +1,10 @@
 package configuration
 
+var AUTH_TYPES = AuthTypesStruct{
+	HOTP: "hotp",
+	TOTP: "totp",
+}
+
 var CLIENT_TYPES = ClientTypesStruct{
 	Mobile: "mobile",
 	Web:    "web",
@@ -23,6 +28,7 @@ var RESPONSE_MESSAGES = ResponseMessagesStruct{
 	AccountSuspended:       "ACCOUNT_SUSPENDED",
 	InternalServerError:    "INTERNAL_SERVER_ERROR",
 	InvalidData:            "INVALID_DATA",
+	InvalidEntryId:         "INVALID_ENTRY_ID",
 	InvalidLogin:           "INVALID_LOGIN",
 	InvalidRecoveryAnswer:  "INVALID_RECOVERY_ANSWER",
 	InvalidToken:           "INVALID_TOKEN",
@@ -34,5 +40,6 @@ var RESPONSE_MESSAGES = ResponseMessagesStruct{
 	OldPasswordIsInvalid:   "OLD_PASSWORD_IS_INVALID",
 	PasswordContainsSpaces: "PASSWORD_CONTAINS_SPACES",
 	PasswordIsTooShort:     "PASSWORD_IS_TOO_SHORT",
+	SecretAlreadyExists:    "SECRET_ALREADY_EXISTS",
 	Unauthorized:           "UNAUTHORIZED",
 }
