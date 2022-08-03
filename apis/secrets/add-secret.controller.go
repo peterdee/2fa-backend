@@ -78,6 +78,7 @@ func addSecretController(context *fiber.Ctx) error {
 		)
 	}
 
+	now := gohelpers.MakeTimestamp()
 	newSecret := models.Secrets{
 		AccountName:    accountName,
 		Algorithm:      algorithm,
@@ -89,7 +90,7 @@ func addSecretController(context *fiber.Ctx) error {
 		Period:         period,
 		ScannedAt:      scannedAt,
 		Secret:         secret,
-		SynchronizedAt: gohelpers.MakeTimestamp(),
+		SynchronizedAt: now,
 		UserID:         userId,
 	}
 	result = database.Connection.Create(&newSecret)
@@ -97,5 +98,11 @@ func addSecretController(context *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusInternalServerError)
 	}
 
-	return utilities.Response(utilities.ResponsePayloadStruct{Context: context})
+	return utilities.Response(utilities.ResponsePayloadStruct{
+		Context: context,
+		Data: fiber.Map{
+			"synchronizedAt": now,
+			"userId":         userId,
+		},
+	})
 }
