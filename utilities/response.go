@@ -22,7 +22,7 @@ func Response(payload ResponsePayloadStruct) error {
 		"datetime": gohelpers.MakeTimestamp(),
 		"handling": gohelpers.MakeTimestamp() - payload.Context.Locals("handling").(int64),
 		"info":     info,
-		"request":  payload.Context.OriginalURL(),
+		"request":  payload.Context.OriginalURL() + " [" + payload.Context.Method() + "]",
 		"status":   status,
 	}
 
