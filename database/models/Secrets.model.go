@@ -2,16 +2,16 @@ package models
 
 type Secrets struct {
 	Generic
-	AccountName    string
-	Algorithm      string
-	AuthType       string
-	Counter        uint
-	Digits         uint
-	EntryID        string
-	Issuer         string
-	Period         uint
-	ScannedAt      int64
-	Secret         string
-	SynchronizedAt int64
-	UserID         uint
+	AccountName    string `json:"accountName"`
+	Algorithm      string `json:"algorithm"`
+	AuthType       string `json:"authType"`
+	Counter        uint   `json:"counter"`
+	Digits         uint   `json:"digits"`
+	EntryID        string `json:"entryId"`
+	Issuer         string `json:"issuer"`
+	Period         uint   `json:"period"`
+	ScannedAt      int64  `json:"scannedAt"`
+	Secret         string `json:"secret"`
+	SynchronizedAt int64  `json:"synchronizedAt"`
+	UserID         uint   `json:"userId"`
 }

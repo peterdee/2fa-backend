@@ -2,6 +2,6 @@ package models
 
 type Passwords struct {
 	Generic
-	Hash   string
-	UserID uint
+	Hash   string `json:"hash"`
+	UserID uint   `json:"userId"`
 }

@@ -1,8 +1,8 @@
 package secrets
 
 type addSecretPayload struct {
-	Algorithm   string `json:"algorithm"`
 	AccountName string `json:"accountName"`
+	Algorithm   string `json:"algorithm"`
 	AuthType    string `json:"authType"`
 	Counter     uint   `json:"counter"`
 	Digits      uint   `json:"digits"`

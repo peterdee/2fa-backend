@@ -2,6 +2,6 @@ package models
 
 type DeletedSecretIDs struct {
 	Generic
-	EntryID string
-	UserID  uint
+	EntryID string `json:"entryId"`
+	UserID  uint   `json:"userId"`
 }

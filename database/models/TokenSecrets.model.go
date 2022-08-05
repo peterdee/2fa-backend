@@ -2,6 +2,6 @@ package models
 
 type TokenSecrets struct {
 	Generic
-	Secret string
-	UserID uint
+	Secret string `json:"secret"`
+	UserID uint   `json:"userId"`
 }
