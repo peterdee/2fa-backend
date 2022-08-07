@@ -4,3 +4,7 @@ tmp/
 # Files
 .env
 run.sh
+
+# Other
+.DS_Store
+.idea/

@@ -28,7 +28,22 @@ func updateSecretController(context *fiber.Ctx) error {
 
 	entryId := context.Params("id")
 	userId := context.Locals("userId").(uint)
-	result := database.Connection.Model(&models.Secrets{}).
+
+	var deletedRecord models.DeletedSecretIDs
+	result := database.Connection.
+		Where("entry_id = ? AND user_id = ?", entryId, userId).
+		Find(&deletedRecord)
+	if result.Error != nil {
+		return fiber.NewError(fiber.StatusInternalServerError)
+	}
+	if result.RowsAffected > 0 {
+		return fiber.NewError(
+			fiber.StatusBadRequest,
+			configuration.RESPONSE_MESSAGES.SecretAlreadyDeleted,
+		)
+	}
+
+	result = database.Connection.Model(&models.Secrets{}).
 		Where("entry_id = ? AND user_id = ?", entryId, userId).
 		Updates(models.Secrets{Issuer: issuer, AccountName: accountName})
 	if result.Error != nil {

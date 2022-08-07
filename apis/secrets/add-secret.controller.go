@@ -101,8 +101,8 @@ func addSecretController(context *fiber.Ctx) error {
 	return utilities.Response(utilities.ResponsePayloadStruct{
 		Context: context,
 		Data: fiber.Map{
-			"synchronizedAt": now,
-			"userId":         userId,
+			"synchronizedAt": newSecret.SynchronizedAt,
+			"userId":         newSecret.UserID,
 		},
 	})
 }
