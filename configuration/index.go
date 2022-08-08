@@ -1,5 +1,7 @@
 package configuration
 
+var ACCOUNT_NAME_MAX_LENGTH int = 64
+
 var AUTH_TYPES = AuthTypesStruct{
 	HOTP: "hotp",
 	TOTP: "totp",
@@ -18,6 +20,8 @@ var ENVS = EnvironmentsStruct{
 	Production:  "production",
 }
 
+var ISSUER_MAX_LENGTH int = 64
+
 var LOGIN_MAX_LENGTH int = 16
 
 var MAX_FAILED_SIGN_IN_ATTEMPTS int = 10
@@ -27,8 +31,10 @@ var PASSWORD_MIN_LENGTH int = 8
 var RESPONSE_MESSAGES = ResponseMessagesStruct{
 	AccountSuspended:       "ACCOUNT_SUSPENDED",
 	InternalServerError:    "INTERNAL_SERVER_ERROR",
+	InvalidAccountName:     "INVALID_ACCOUNT_NAME",
 	InvalidData:            "INVALID_DATA",
 	InvalidEntryId:         "INVALID_ENTRY_ID",
+	InvalidIssuer:          "INVALID_ISSUER",
 	InvalidLogin:           "INVALID_LOGIN",
 	InvalidRecoveryAnswer:  "INVALID_RECOVERY_ANSWER",
 	InvalidToken:           "INVALID_TOKEN",

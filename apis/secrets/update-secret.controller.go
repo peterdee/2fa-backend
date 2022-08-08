@@ -26,13 +26,26 @@ func updateSecretController(context *fiber.Ctx) error {
 		)
 	}
 
+	if len(accountName) > configuration.ACCOUNT_NAME_MAX_LENGTH {
+		return fiber.NewError(
+			fiber.StatusBadRequest,
+			configuration.RESPONSE_MESSAGES.InvalidAccountName,
+		)
+	}
+
+	if len(issuer) > configuration.ISSUER_MAX_LENGTH {
+		return fiber.NewError(
+			fiber.StatusBadRequest,
+			configuration.RESPONSE_MESSAGES.InvalidIssuer,
+		)
+	}
+
 	entryId := context.Params("id")
 	userId := context.Locals("userId").(uint)
 
-	var deletedRecord models.DeletedSecretIDs
 	result := database.Connection.
 		Where("entry_id = ? AND user_id = ?", entryId, userId).
-		Find(&deletedRecord)
+		Find(&models.DeletedSecretIDs{})
 	if result.Error != nil {
 		return fiber.NewError(fiber.StatusInternalServerError)
 	}
@@ -47,7 +60,7 @@ func updateSecretController(context *fiber.Ctx) error {
 		Where("entry_id = ? AND user_id = ?", entryId, userId).
 		Updates(models.Secrets{Issuer: issuer, AccountName: accountName})
 	if result.Error != nil {
-		return result.Error
+		return fiber.NewError(fiber.StatusInternalServerError)
 	}
 
 	return utilities.Response(utilities.ResponsePayloadStruct{Context: context})

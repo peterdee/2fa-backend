@@ -52,11 +52,24 @@ func addSecretController(context *fiber.Ctx) error {
 		)
 	}
 
+	if len(accountName) > configuration.ACCOUNT_NAME_MAX_LENGTH {
+		return fiber.NewError(
+			fiber.StatusBadRequest,
+			configuration.RESPONSE_MESSAGES.InvalidAccountName,
+		)
+	}
+
+	if len(issuer) > configuration.ISSUER_MAX_LENGTH {
+		return fiber.NewError(
+			fiber.StatusBadRequest,
+			configuration.RESPONSE_MESSAGES.InvalidIssuer,
+		)
+	}
+
 	userId := context.Locals("userId").(uint)
-	var existingDeletedRecord models.DeletedSecretIDs
 	result := database.Connection.
 		Where("entry_id = ? AND user_id = ?", entryId, userId).
-		Find(&existingDeletedRecord)
+		Find(&models.DeletedSecretIDs{})
 	if result.RowsAffected > 0 {
 		return fiber.NewError(
 			fiber.StatusBadRequest,
@@ -72,10 +85,14 @@ func addSecretController(context *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusInternalServerError)
 	}
 	if result.RowsAffected > 0 {
-		return fiber.NewError(
-			fiber.StatusBadRequest,
-			configuration.RESPONSE_MESSAGES.SecretAlreadyExists,
-		)
+		return utilities.Response(utilities.ResponsePayloadStruct{
+			Context: context,
+			Data: fiber.Map{
+				"synchronizedAt": existingSecretRecord.SynchronizedAt,
+				"userId":         existingSecretRecord.UserID,
+			},
+			Info: configuration.RESPONSE_MESSAGES.SecretAlreadyExists,
+		})
 	}
 
 	now := gohelpers.MakeTimestamp()

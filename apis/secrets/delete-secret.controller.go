@@ -14,8 +14,18 @@ func deleteSecretController(context *fiber.Ctx) error {
 	entryId := context.Params("id")
 	userId := context.Locals("userId").(uint)
 
+	result := database.Connection.
+		Where("entry_id = ? AND user_id = ?", entryId, userId).
+		Find(&models.DeletedSecretIDs{})
+	if result.RowsAffected > 0 {
+		return fiber.NewError(
+			fiber.StatusBadRequest,
+			configuration.RESPONSE_MESSAGES.SecretAlreadyDeleted,
+		)
+	}
+
 	var record models.Secrets
-	result := database.Connection.Where(
+	result = database.Connection.Where(
 		"entry_id = ? AND user_id = ?",
 		entryId,
 		userId,
