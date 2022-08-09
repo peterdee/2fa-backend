@@ -1,6 +1,6 @@
 package configuration
 
-var ACCOUNT_NAME_MAX_LENGTH int = 64
+var ACCOUNT_NAME_MAX_LENGTH int = 32
 
 var AUTH_TYPES = AuthTypesStruct{
 	HOTP: "hotp",
@@ -20,7 +20,7 @@ var ENVS = EnvironmentsStruct{
 	Production:  "production",
 }
 
-var ISSUER_MAX_LENGTH int = 64
+var ISSUER_MAX_LENGTH int = 32
 
 var LOGIN_MAX_LENGTH int = 16
 
