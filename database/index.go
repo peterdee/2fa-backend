@@ -29,6 +29,7 @@ func Connect() {
 	}
 
 	instance.AutoMigrate(&models.Users{})
+	instance.AutoMigrate(&models.AuthCodes{})
 	instance.AutoMigrate(&models.Passwords{})
 	instance.AutoMigrate(&models.Secrets{})
 	instance.AutoMigrate(&models.DeletedSecretIDs{})
