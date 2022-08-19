@@ -11,6 +11,7 @@ func Initialize(app *fiber.App) {
 
 	api.Get("/code", middlewares.Authorize, getAuthCodeController)
 	api.Get("/logout", middlewares.Authorize, logoutController)
+	api.Post("/code", codeSignInController)
 	api.Post("/sign-in", signInController)
 	api.Post("/sign-up", signUpController)
 }
