@@ -20,6 +20,7 @@ type ResponseMessagesStruct struct {
 	AccountSuspended       string
 	InternalServerError    string
 	InvalidAccountName     string
+	InvalidClientType      string
 	InvalidData            string
 	InvalidEntryId         string
 	InvalidIssuer          string

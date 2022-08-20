@@ -9,9 +9,29 @@ import (
 func Initialize(app *fiber.App) {
 	api := app.Group("/api/secrets")
 
-	api.Delete("/:id", middlewares.Authorize, deleteSecretController)
-	api.Delete("/delete/all", middlewares.Authorize, deleteAllSecretsController)
+	api.Delete(
+		"/:id",
+		middlewares.Authorize,
+		middlewares.ClientTypeCheck,
+		deleteSecretController,
+	)
+	api.Delete(
+		"/delete/all",
+		middlewares.Authorize,
+		middlewares.ClientTypeCheck,
+		deleteAllSecretsController,
+	)
 	api.Get("/", middlewares.Authorize, getSecretsController)
-	api.Patch("/:id", middlewares.Authorize, updateSecretController)
-	api.Post("/", middlewares.Authorize, addSecretController)
+	api.Patch(
+		"/:id",
+		middlewares.Authorize,
+		middlewares.ClientTypeCheck,
+		updateSecretController,
+	)
+	api.Post(
+		"/",
+		middlewares.Authorize,
+		middlewares.ClientTypeCheck,
+		addSecretController,
+	)
 }

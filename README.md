@@ -1,8 +1,8 @@
 ## 2FA Backend
 
-Backend for [2FA Mobile](https://github.com/peterdee/2fa-mobile)
+Backend application for [2FA Mobile](https://github.com/peterdee/2fa-mobile)
 
-Stack: [Go](https://golang.org), [Fiber](https://gofiber.io), [GORM](https://gorm.io)
+Stack: [Golang](https://golang.org), [Fiber](https://gofiber.io), [GORM](https://gorm.io)
 
 Development: http://localhost:2244
 

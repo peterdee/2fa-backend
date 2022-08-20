@@ -32,6 +32,7 @@ var RESPONSE_MESSAGES = ResponseMessagesStruct{
 	AccountSuspended:       "ACCOUNT_SUSPENDED",
 	InternalServerError:    "INTERNAL_SERVER_ERROR",
 	InvalidAccountName:     "INVALID_ACCOUNT_NAME",
+	InvalidClientType:      "INVALID_CLIENT_TYPE",
 	InvalidData:            "INVALID_DATA",
 	InvalidEntryId:         "INVALID_ENTRY_ID",
 	InvalidIssuer:          "INVALID_ISSUER",
